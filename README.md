@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Brasa — Modern Kitchen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --charcoal: #1a1714;
+      --rust: #b84c2b;
+      --gold: #c8a96e;
+      --warm-gray: #6b625a;
+      --light-gray: #e8e2d9;
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--light-gray);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.04em;
+      color: var(--charcoal);
+      cursor: pointer;
+    }
+    .nav-logo span { color: var(--rust); }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0; right: 0;
+      height: 1px; background: var(--rust);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--rust); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+    /* ── PAGES ── */
+    .page { display: none; padding-top: 70px; }
+    .page.active { display: block; }
+
+    /* ═══════════════════════════ HOME ═══════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .hero-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 4rem 5rem 5rem;
+      animation: fadeUp 0.9s ease both;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      line-height: 1.05;
+      margin-bottom: 1.8rem;
+    }
+    .hero-title em { color: var(--rust); font-style: italic; }
+    .hero-subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--warm-gray);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 3rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--charcoal);
+      color: var(--cream);
+    }
+    .btn-primary:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(184,76,43,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--charcoal);
+      border: 1.5px solid var(--charcoal);
+    }
+    .btn-outline:hover {
+      background: var(--charcoal);
+      color: var(--cream);
+      transform: translateY(-2px);
+    }
+
+    .hero-image {
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-image-inner {
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(184,76,43,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(200,169,110,0.2) 0%, transparent 50%),
+        linear-gradient(135deg, #2a221c 0%, #1a1714 60%, #0f0c0a 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-plate {
+      font-size: 9rem;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: 3rem; right: 3rem;
+      width: 110px; height: 110px;
+      border: 1px solid rgba(200,169,110,0.5);
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.6;
+      animation: spin 20s linear infinite;
+    }
+
+    /* features strip */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--light-gray);
+      animation: fadeUp 0.9s 0.3s ease both;
+    }
+    .feature {
+      padding: 2.5rem 3rem;
+      border-right: 1px solid var(--light-gray);
+    }
+    .feature:last-child { border-right: none; }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .feature-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .feature-text { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.7; font-weight: 300; }
+
+    /* ═══════════════════════════ MENU ═══════════════════════════ */
+    .menu-nav {
+      display: flex;
+      gap: 0;
+      background: #fff;
+      border-bottom: 1px solid var(--light-gray);
+      position: sticky;
+      top: 70px;
+      z-index: 50;
+      overflow-x: auto;
+    }
+    .menu-nav::-webkit-scrollbar { display: none; }
+    .menu-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      user-select: none;
+    }
+    .menu-nav-item:hover {
+      color: var(--rust);
+      background: var(--cream);
+    }
+    .menu-nav-item.active {
+      color: var(--rust);
+      border-bottom-color: var(--rust);
+    }
+    .menu-nav-item .nav-emoji { font-size: 1rem; }
+    .menu-nav-divider {
+      width: 1px;
+      background: var(--light-gray);
+      align-self: stretch;
+      margin: 0.6rem 0;
+    }
+
+
+    .menu-header {
+      background: var(--charcoal);
+      padding: 5rem 5rem 4rem;
+      color: var(--cream);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.7s ease both;
+    }
+    .menu-header::before {
+      content: 'MENU';
+      position: absolute; right: -1rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 14rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.03);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .menu-header-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .menu-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+    .menu-header h1 em { color: var(--rust); font-style: italic; }
+
+    .menu-body { padding: 4rem 5rem; }
+    .menu-section { margin-bottom: 4rem; }
+    .menu-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .menu-section-title span { font-size: 1.4rem; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .menu-item {
+      background: #fff;
+      border: 1px solid var(--light-gray);
+      padding: 1.8rem;
+      display: flex; gap: 1.2rem;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-item::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--rust);
+      transition: height 0.3s ease;
+    }
+    .menu-item:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .menu-item:hover::before { height: 100%; }
+    .menu-item-emoji { font-size: 2.4rem; flex-shrink: 0; }
+    .menu-item-info { flex: 1; }
+    .menu-item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+    .menu-item-desc {
+      font-size: 0.82rem;
+      color: var(--warm-gray);
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 0.8rem;
+    }
+    .menu-item-price {
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--rust);
+    }
+    .menu-tag {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      background: var(--cream);
+      border: 1px solid var(--light-gray);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* ═══════════════════════════ CONTACT ════════════════════════ */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      min-height: calc(100vh - 70px);
+      animation: fadeUp 0.7s ease both;
+    }
+    .contact-info {
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 5rem 4rem;
+      display: flex; flex-direction: column; gap: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-info::after {
+      content: '';
+      position: absolute; bottom: -5rem; left: -5rem;
+      width: 20rem; height: 20rem;
+      border-radius: 50%;
+      border: 1px solid rgba(200,169,110,0.15);
+    }
+    .contact-info-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .contact-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 400;
+      line-height: 1.15;
+    }
+    .contact-info h2 em { color: var(--rust); font-style: italic; }
+    .contact-detail { display: flex; flex-direction: column; gap: 0.3rem; }
+    .contact-detail-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .contact-detail-value {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.85);
+      line-height: 1.7;
+    }
+    .contact-divider {
+      width: 40px; height: 1px;
+      background: rgba(200,169,110,0.4);
+    }
+
+    .contact-form-panel {
+      padding: 5rem 4rem;
+      background: var(--cream);
+    }
+    .contact-form-panel h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .contact-form-panel p {
+      font-size: 0.9rem;
+      color: var(--warm-gray);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+    }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 0.6rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: #fff;
+      border: 1.5px solid var(--light-gray);
+      color: var(--charcoal);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--rust);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .submit-row { display: flex; align-items: center; gap: 2rem; margin-top: 2rem; }
+    .success-msg {
+      font-size: 0.85rem;
+      color: #4a7c59;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .success-msg.show { opacity: 1; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-18px); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-image { display: none; }
+      .hero-text { padding: 4rem 2rem 3rem; }
+      .features { grid-template-columns: 1fr; }
+      .feature { border-right: none; border-bottom: 1px solid var(--light-gray); }
+      .menu-header, .menu-body { padding: 3rem 2rem; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .contact-info { padding: 3rem 2rem; }
+      .contact-form-panel { padding: 3rem 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo" onclick="showPage('home')">La <span>Brasa</span></div>
+    <div class="nav-links">
+      <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+      <a onclick="showPage('menu')" id="nav-menu">Menu</a>
+      <a onclick="showPage('contact')" id="nav-contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════ HOME PAGE ══════════════ -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Est. 2018 · New York City</p>
+        <h1 class="hero-title">
+          Where Flavor<br>Meets <em>Craft</em>
+        </h1>
+        <p class="hero-subtitle">
+          La Brasa is a modern kitchen rooted in wood-fire technique and seasonal ingredients. Every dish tells a story of place, process, and passion.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" onclick="showPage('menu')">View Our Menu</button>
+          <button class="btn btn-outline" onclick="showPage('contact')">Get in Touch</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-image-inner">
+          <div class="hero-plate">🍽️</div>
+          <div class="hero-badge">Open<br>Daily<br>—<br>5pm–11pm</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔥</div>
+        <div class="feature-title">Wood-Fire Kitchen</div>
+        <p class="feature-text">Every protein kissed by oak and cherry wood, delivering depth and smoke that no oven can replicate.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🌿</div>
+        <div class="feature-title">Seasonal Ingredients</div>
+        <p class="feature-text">Our menu evolves with the seasons. We source locally from trusted farms within 150 miles of our door.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🍷</div>
+        <div class="feature-title">Curated Wine List</div>
+        <p class="feature-text">Over 80 natural and biodynamic wines carefully selected to pair with our kitchen's bold flavors.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ MENU PAGE ══════════════ -->
+  <div class="page" id="page-menu">
+    <div class="menu-header">
+      <p class="menu-header-eyebrow">Seasonal · Spring 2026</p>
+      <h1>Our <em>Menu</em></h1>
+    </div>
+
+    <!-- Category jump nav -->
+    <div class="menu-nav" id="menu-nav">
+      <div class="menu-nav-item active" onclick="scrollToSection('starters')">
+        <span class="nav-emoji">🥗</span> Starters
+      </div>
+      <div class="menu-nav-divider"></div>
+      <div class="menu-nav-item" onclick="scrollToSection('mains')">
+        <span class="nav-emoji">🍖</span> Mains
+      </div>
+      <div class="menu-nav-divider"></div>
+      <div class="menu-nav-item" onclick="scrollToSection('desserts')">
+        <span class="nav-emoji">🍮</span> Desserts
+      </div>
+    </div>
+
+    <div class="menu-body">
+
+      <div class="menu-section" id="section-starters">
+        <div class="menu-section-title"><span>🥗</span> Starters</div>
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-emoji">🥩</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Beef Tartare<span class="menu-tag">Chef's Pick</span></div>
+              <div class="menu-item-desc">Hand-cut wagyu, capers, shallots, quail egg yolk, toasted brioche.</div>
+              <div class="menu-item-price">$19</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🧅</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Burrata & Stone Fruit</div>
+              <div class="menu-item-desc">Creamy burrata, roasted nectarines, pistachio crumble, elderflower drizzle.</div>
+              <div class="menu-item-price">$17</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🍤</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Crispy Calamari</div>
+              <div class="menu-item-desc">Flash-fried rings, smoked paprika aioli, charred lemon.</div>
+              <div class="menu-item-price">$16</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🥣</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Roasted Beet Soup<span class="menu-tag">Vegan</span></div>
+              <div class="menu-item-desc">Heirloom beets, coconut cream, ginger oil, microgreens.</div>
+              <div class="menu-item-price">$14</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section" id="section-mains">
+        <div class="menu-section-title"><span>🍖</span> Mains</div>
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-emoji">🥩</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Brasa Ribeye<span class="menu-tag">Signature</span></div>
+              <div class="menu-item-desc">16oz dry-aged ribeye, chimichurri, wood-roasted garlic, confit potatoes.</div>
+              <div class="menu-item-price">$58</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🐟</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Pan-Seared Halibut</div>
+              <div class="menu-item-desc">Alaskan halibut, saffron beurre blanc, spring peas, crispy capers.</div>
+              <div class="menu-item-price">$42</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🍗</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Spatchcock Chicken</div>
+              <div class="menu-item-desc">Half bird, herb brine, roasted fennel, charred corn salsa, jus.</div>
+              <div class="menu-item-price">$34</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🍄</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Wild Mushroom Risotto<span class="menu-tag">Vegetarian</span></div>
+              <div class="menu-item-desc">Porcini, chanterelle, truffle oil, aged parmigiano, fresh herbs.</div>
+              <div class="menu-item-price">$29</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section" id="section-desserts">
+        <div class="menu-section-title"><span>🍮</span> Desserts</div>
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-emoji">🍫</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Valrhona Lava Cake</div>
+              <div class="menu-item-desc">Warm dark chocolate center, Madagascar vanilla ice cream, gold dust.</div>
+              <div class="menu-item-price">$14</div>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-emoji">🍋</div>
+            <div class="menu-item-info">
+              <div class="menu-item-name">Yuzu Tart</div>
+              <div class="menu-item-desc">Citrus curd, almond shell, torched meringue, yuzu gel.</div>
+              <div class="menu-item-price">$13</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ CONTACT PAGE ══════════════ -->
+  <div class="page" id="page-contact">
+    <div class="contact-layout">
+      <div class="contact-info">
+        <div>
+          <p class="contact-info-eyebrow">Find Us</p>
+          <h2>We'd Love<br>to <em>Hear</em><br>from You</h2>
+        </div>
+        <div class="contact-divider"></div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Address</span>
+          <span class="contact-detail-value">142 West 18th Street<br>New York, NY 10011</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Hours</span>
+          <span class="contact-detail-value">Mon – Fri: 5pm – 11pm<br>Sat – Sun: 12pm – 11pm</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Phone</span>
+          <span class="contact-detail-value">(212) 555-0174</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Email</span>
+          <span class="contact-detail-value">hello@labrasa.com</span>
+        </div>
+      </div>
+
+      <div class="contact-form-panel">
+        <h3>Send Us a Message</h3>
+        <p>Questions, feedback, or reservations? We read every message.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="Jane" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Your Message</label>
+          <textarea id="message" rows="7" placeholder="Tell us about your experience, ask a question, or request a reservation…"></textarea>
+        </div>
+        <div class="submit-row">
+          <button class="btn btn-primary" onclick="submitForm()">Submit Message</button>
+          <span class="success-msg" id="success-msg">✓ Message sent! We'll be in touch soon.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function scrollToSection(id) {
+      const el = document.getElementById('section-' + id);
+      if (!el) return;
+      const offset = 70 + 46; // nav + menu-nav height
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+
+    // Highlight active menu-nav item on scroll
+    function updateMenuNav() {
+      const sections = ['starters', 'mains', 'desserts'];
+      const offset = 70 + 46 + 20;
+      let current = sections[0];
+      for (const id of sections) {
+        const el = document.getElementById('section-' + id);
+        if (el && el.getBoundingClientRect().top <= offset) current = id;
+      }
+      document.querySelectorAll('.menu-nav-item').forEach((item, i) => {
+        item.classList.toggle('active', sections[i] === current);
+      });
+    }
+    window.addEventListener('scroll', updateMenuNav);
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      document.getElementById('nav-' + id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitForm() {
+      const fname = document.getElementById('fname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!fname || !email || !message) {
+        alert('Please fill in your name, email, and message before submitting.');
+        return;
+      }
+      document.getElementById('fname').value = '';
+      document.getElementById('lname').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('message').value = '';
+      const msg = document.getElementById('success-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 5000);
+    }
+  </script>
+</body>
+</html>
